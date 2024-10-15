@@ -4,11 +4,52 @@
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <title>TaskList</title>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
     </head>
     <body>
         <h1>Tasklist</h1>
-        <ul>
-            <li>Tasca 1</li>
-        </ul>
+        <ul id="taskList"></ul>
+        <button id="addTsk">Añadir Tarea</button>
+            <div id = "dialog" title="Añadir Nueva Tarea">
+                <form>
+                    <label for="task">Tarea</label>
+                    <input type="text" name="task" id="task">
+                    <input type="submit" style="position:absolute; top:-1000px">
+                </form>
+            </div>
+        <script>
+
+        $(function () {
+        // Inicializamos el diálogo de jQuery UI pero lo mantenemos oculto
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: {
+            "Añadir tarea": function () {
+                const taskText = $("#task").val();
+                if (taskText) {
+                addTask(taskText);
+                $(this).dialog("close");
+                }
+            },
+            Cancelar: function () {
+                $(this).dialog("close");
+            }
+            }
+        });
+
+        $("#addTsk").on("click", function () {
+            $("#dialog").dialog("open");
+        });
+
+        function addTask(taskText) {
+            const newTask = $("<li></li>").text(taskText).addClass("task");
+            $("#taskList").append(newTask);
+        }
+        });
+        </script>
     </body>
 </html>
