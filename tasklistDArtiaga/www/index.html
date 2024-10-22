@@ -10,46 +10,47 @@
         <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
     </head>
     <body>
-        <h1>Tasklist</h1>
+        <h1>Tasklist</h1>         
+           
         <ul id="taskList"></ul>
+            
         <button id="addTsk">Añadir Tarea</button>
-            <div id = "dialog" title="Añadir Nueva Tarea">
-                <form>
-                    <label for="task">Tarea</label>
-                    <input type="text" name="task" id="task">
-                    <input type="submit" style="position:absolute; top:-1000px">
-                </form>
-            </div>
+
+        <div id="dialog" title="Añadir Nueva Tarea">
+            <label for="task">Tarea</label>
+            <input type="text" name="task" id="task">
+        </div>
+
         <script>
+            $(function (){
+                $("#dialog").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    buttons: {
+                        "Añadir tarea": function(){
+                            var taskText = $("#task").val();
+                            if (taskText) {
+                                addTask(taskText);
+                                $(this).dialog("close");
+                                $("#task").val('');
+                            }
+                        },
+                        "cancelar": function(){
+                            $(this).dialog("close")
+                        }
+                    }
+                });
 
-        $(function () {
-        // Inicializamos el diálogo de jQuery UI pero lo mantenemos oculto
-        $("#dialog").dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-            "Añadir tarea": function () {
-                const taskText = $("#task").val();
-                if (taskText) {
-                addTask(taskText);
-                $(this).dialog("close");
+                $("#addTsk").click (function(){
+                    $("#dialog").dialog("open");
+                });
+
+                function addTask(taskText) {
+                    var newTask = $("<li></li>").text(taskText).addClass("task");
+                    $("#taskList").append(newTask);
                 }
-            },
-            Cancelar: function () {
-                $(this).dialog("close");
-            }
-            }
-        });
-
-        $("#addTsk").on("click", function () {
-            $("#dialog").dialog("open");
-        });
-
-        function addTask(taskText) {
-            const newTask = $("<li></li>").text(taskText).addClass("task");
-            $("#taskList").append(newTask);
-        }
-        });
+            });
         </script>
     </body>
 </html>
+            
